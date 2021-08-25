@@ -1,52 +1,52 @@
-path <- "C:/Users/karen/Downloads/Cursos Alura/Linguagem R/Data Visualization parte 1 gr·ficos com uma vari·vel/googleplaystore.csv" #Data
+path <- "googleplaystore.csv" #Data
 dados <- read.csv(file = path) ##Values
 
-View(dados) ##VisualizaÁ„o de dados, tendo o objeto como par‚metro
+View(dados) ##Visualiza√ß√£o de dados, tendo o objeto como par√¢metro
 
-head(dados) ##VisualizaÁ„o dos primeiros dados
+head(dados) ##Visualiza√ß√£o dos primeiros dados
 
-tail(dados) ##VisualizaÁ„o dos ˙ltimos dados
+tail(dados) ##Visualiza√ß√£o dos √∫ltimos dados
 
 View(head(dados)) 
 
-str(dados) ##VerificaÁ„o de tipos de dados armazenados
+str(dados) ##Verifica√ß√£o de tipos de dados armazenados
 
-##Alterar tipo de importaÁ„o, funÁ„o n„o reconhece Factor como dado
-dados <- read.csv(file = "C:/Users/karen/Downloads/Cursos Alura/Linguagem R/Data Visualization parte 1 gr·ficos com uma vari·vel/googleplaystore.csv")
+##Alterar tipo de importa√ß√£o, fun√ß√£o n√£o reconhece Factor como dado
+dados <- read.csv(file = "googleplaystore.csv")
 
 str(dados)
 
-##install.packages("dplyr") ##FunÁ„o para instalaÁ„o de bibliotecas
-library(dplyr) ##FunÁ„o para utilizar a biblioteca instalada
+##install.packages("dplyr") ##Fun√ß√£o para instala√ß√£o de bibliotecas
+library(dplyr) ##Fun√ß√£o para utilizar a biblioteca instalada
 
 ##ggplot2 = Biblioteca de histogramas
 ##install.packages("ggplot2")
 library(ggplot2)
 
-hist(dados$Rating) ##FunÁ„o para desenhar o histograma
+hist(dados$Rating) ##Fun√ß√£o para desenhar o histograma
 
-table(dados$Rating) ##Cria uma tabela de frequÍncia -> Contagem de cada valor que aparece na base de dados
+table(dados$Rating) ##Cria uma tabela de frequ√™ncia -> Contagem de cada valor que aparece na base de dados
 
-hist(dados$Rating, xlim = c(1,5)) ##Define limite para a reta X do gr·fico
+hist(dados$Rating, xlim = c(1,5)) ##Define limite para a reta X do gr√°fico
 
-##+ È o concatenador de funÁıes no ggplot2
-##aes = TÌtulo do gr·fico abaixo do eixo X
+##+ √© o concatenador de fun√ß√µes no ggplot2
+##aes = T√≠tulo do gr√°fico abaixo do eixo X
 ## na.rm = TRUE - Recebe valor booleano, remove valores infinitos
-##breaks = seq(1,5) - Cria sequencia no gr·fico de colunas de 1 a 5
+##breaks = seq(1,5) - Cria sequencia no gr√°fico de colunas de 1 a 5
 rating.Histogram <- ggplot(data = dados) + geom_histogram(mapping = aes(x = Rating), na.rm = TRUE, breaks = seq(1,5)) + xlim(c(1,5))
 
-seq(1,5) ##Cria um array de valor minimo atÈ o m·ximo
+seq(1,5) ##Cria um array de valor minimo at√© o m√°ximo
 
-##rating.Histogram <- Onde o gr·fico foi salvo
+##rating.Histogram <- Onde o gr√°fico foi salvo
 rating.Histogram
 
 ##stat - contagem de quantos registros tem a categoria no nosso banco de dados
-##Valores do eixo X ir„o para o eixo Y - coord_flip()
+##Valores do eixo X ir√£o para o eixo Y - coord_flip()
 ggplot(data = dados) + geom_bar(mapping = aes(x = Category), stat = "count") + coord_flip()
 
 category.Freq <- data.frame(table(dados$Category))
 
-##stat = "identity" - Indica para a funÁ„o geom_bar que a prÛpria funÁ„o n„o vai mais gerara  tabela de frequÍncia, n„o far· a contagem
+##stat = "identity" - Indica para a fun√ß√£o geom_bar que a pr√≥pria fun√ß√£o n√£o vai mais gerara  tabela de frequ√™ncia, n√£o far√° a contagem
 ##x = reorder(Var1, Freq) - Ordena valores de forma decrescente -> -Freq para ordem crescente) 
 ggplot(data = category.Freq) + geom_bar(mapping = aes(x = reorder(Var1, Freq), y = Freq), stat = "identity") + coord_flip()
 
@@ -59,19 +59,19 @@ category.Top10 <- category.Top10[1:10, ]
 freq.Category.Plot <- ggplot(data = category.Top10) + geom_bar(mapping = aes(x = reorder(Var1, Freq), y = Freq), stat = "identity") + coord_flip()
 
 ##Importante manter a base original e criar sub bases, chamadas de subsets.
-## %>% - ConcatenaÁ„o de funÁıes
+## %>% - Concatena√ß√£o de fun√ß√µes
 dados_2 <- dados %>% filter(Category != "1.9")
 
 ##Verificar valor minimo e maximo
 min(dados_2$Rating)
 max(dados_2$Rating)
 ##[1] NaN
-##Ocorre pois h· dados sem definiÁ„o
+##Ocorre pois h√° dados sem defini√ß√£o
 
 ##is.na identifica todos os NaN
 dados_2 %>% filter(is.na(Rating)) %>% count()
 
-##Retorna informaÁıes mais precisas e detalhadas sobre o campo Rating
+##Retorna informa√ß√µes mais precisas e detalhadas sobre o campo Rating
 summary(dados_2$Rating)
 
 dados_2 %>% filter(is.na(Rating)) %>% group_by(Category) %>% 
@@ -103,8 +103,8 @@ max(dados_2$newRating)
 ##newRating > 4 = "bom"
 ##newRating 2.1 e 3.9 = "regular"
 
-##n„o cria um novo conjunto de dados, mas sim uma nova coluna (Summarise cria um novo conjunto e vc perde o anterior)
-##if_else(CondiÁ„o, Caso seja verdadeira, Sen„o)
+##n√£o cria um novo conjunto de dados, mas sim uma nova coluna (Summarise cria um novo conjunto e vc perde o anterior)
+##if_else(Condi√ß√£o, Caso seja verdadeira, Sen√£o)
 dados_2 <- dados_2 %>%
   mutate(rating_class = if_else(newRating < 2, "Ruim", 
                                 if_else(newRating > 4, "Bom", "Regular")))
@@ -115,10 +115,10 @@ rating.Histogram
 freq.Category.Plot
 rating_class_plot
 
-##Gr·fico de pizza (n„o tem uma funÁ„o prÛpria/AtÈ 5 elementos)
+##Gr√°fico de pizza (n√£o tem uma fun√ß√£o pr√≥pria/At√© 5 elementos)
 type.Freq <- data.frame(table(dados_2$Type))
-##Caso n„o houvesse um y, terÌamos que fazer o stat count para fazer uma frequencia dos valores de x
-##coord_polar altera o formato do gr·fico atravÈs da alteraÁ„o do raio
+##Caso n√£o houvesse um y, ter√≠amos que fazer o stat count para fazer uma frequencia dos valores de x
+##coord_polar altera o formato do gr√°fico atrav√©s da altera√ß√£o do raio
 type.Plot <- ggplot(type.Freq) + geom_bar(aes(x = "", y = Freq, fill = Var1), stat = "identity", width = 1) +
   coord_polar(theta = "y", start = 0)
 
@@ -131,7 +131,7 @@ freq.Size <- data.frame(table(dados_2$Size))
 teste <- dados_2$Size[1]
 teste
 
-##OcorrÍncia de K ou M nos registros
+##Ocorr√™ncia de K ou M nos registros
 grepl(pattern = "m", x = teste, ignore.case = T)
 grepl(pattern = "K", x = teste, ignore.case = T)
 
@@ -139,7 +139,7 @@ grepl(pattern = "K", x = teste, ignore.case = T)
 gsub(pattern = "M", replacement = "--", x = teste)
 gsub(pattern = "K", replacement = "--", x = teste)
 
-##Convrs„o de M para Kb
+##Convrs√£o de M para Kb
 1 * 1024
 
 ##Loops dentro do R em grande bases de dados
@@ -163,7 +163,7 @@ size.App.Plot <- ggplot(size.app) + geom_histogram(aes(kb))
 
 size.App.Plot
 
-##lubridate - Facilita manipulaÁ„o de datas e horas
+##lubridate - Facilita manipula√ß√£o de datas e horas
 ##install.packages("lubridate")
 library(lubridate)
 
@@ -190,7 +190,7 @@ data_hora <- "2021-07-14 10:21:08"
 ##"2021-07-14 10:21:08"
 data_hora <- ymd_hms(data_hora)
 ##"2021-07-14 10:21:08 UTC"
-##Extrair apenas o mÍs
+##Extrair apenas o m√™s
 month(data_hora)
 ##7
 ##Extrair apenas o dia
@@ -214,15 +214,15 @@ notas$data_2 <- ymd_hms(notas$data)
 str(notas)
 ggplot(notas) + geom_line(aes(x = data_2, y = Sentiment_Polarity))
 ##Datas utilizamos % antecedendo
-##Y mai˙sculo È ano com quatro dÌgitos
+##Y mai√∫sculo √© ano com quatro d√≠gitos
 notas$data_2 <- parse_date_time(format(notas$data_2, "%Y-%m"), "ym")
 notas$data_2
 ggplot(notas) + geom_line(aes(x = data_2, y = Sentiment_Polarity))
-##Pacote dplyr para mÈdias
+##Pacote dplyr para m√©dias
 media_nota <- notas %>% group_by(data_2) %>% summarise(media = mean(Sentiment_Polarity))
 nota_plot <- ggplot(media_nota) + geom_line(aes(x = data_2, y = media))
 
-##Gr·ficos atÈ aqui
+##Gr√°ficos at√© aqui
 rating.Histogram
 freq.Category.Plot
 type.Plot
@@ -231,12 +231,12 @@ rating_class_plot
 nota_plot
 
 rating.Histogram
-##inserir tÌtulo no gr·fico
+##inserir t√≠tulo no gr√°fico
 rating.Histogram <- rating.Histogram + ggtitle("Histograma Rating")
-##centralizar tÌtulo
+##centralizar t√≠tulo
 ##0.5 pois o valor vai de 0 a 1
 rating.Histogram <- rating.Histogram + theme(plot.title = element_text(hjust = 0.5))
-##alterar cor do layout do gr·fico
+##alterar cor do layout do gr√°fico
 rating.Histogram <- rating.Histogram + theme_bw()
 
 freq.Category.Plot
@@ -253,8 +253,8 @@ freq.Category.Plot
 type.Plot
 blank_theme <- theme_minimal() +
                theme(
-                  ##ggplot n„o suporta o gr·fico de pizza, a gente adapta. 
-                  ##FunÁ„o que vai limpar os erros do gr·fico
+                  ##ggplot n√£o suporta o gr√°fico de pizza, a gente adapta. 
+                  ##Fun√ß√£o que vai limpar os erros do gr√°fico
                   axis.title.x = element_blank(), 
                   axis.title.y = element_blank(), 
                   panel.border = element_blank(),
@@ -267,12 +267,12 @@ library(scales)
 type.Plot <- type.Plot + geom_text(aes(x = "", y = Freq/2,
                           label = percent(Freq/sum(Freq))), size = 5)
 type.Plot <- type.Plot + scale_fill_discrete(name = "Tipo App")
-type.Plot <- type.Plot + ggtitle("Tipo de AplicaÁıes") + theme(plot.title = element_text(hjust = 0.5))
+type.Plot <- type.Plot + ggtitle("Tipo de Aplica√ß√µes") + theme(plot.title = element_text(hjust = 0.5))
 type.Plot
 
 size.App.Plot <- size.App.Plot + ggtitle("Histograma Tamanho dos Aplicativos")
 size.App.Plot + geom_histogram(aes(kb), fill = "blue")
-rainbow(5) ##FunÁ„o disponibiiza hexadecimal de cores
+rainbow(5) ##Fun√ß√£o disponibiiza hexadecimal de cores
 size.App.Plot + geom_histogram(aes(kb), fill = rainbow(30))
 size.App.Plot <- size.App.Plot + geom_histogram(aes(kb, fill = ..x..) ) +
                     scale_fill_gradient(low = "blue", high = "yellow") + guides(fill = FALSE)
@@ -282,14 +282,14 @@ size.App.Plot <- size.App.Plot + theme_bw()
 rating_class_plot
 rating_class_plot <- rating_class_plot + ggtitle("Categoria de notas do App") + xlab("Categoria") +
                                                                                 ylab("Quantidade")
-#Prestar atenÁ„o nas cores intuitivas
+#Prestar aten√ß√£o nas cores intuitivas
 ##rating_class_plot + geom_bar(aes(rating_class, fill = rating_class)) + scale_fill_manual("legend", values = c("bom" = "green4", "regular" = "yellow2", "ruim" = "red"))
 
 rating_class_plot <- rating_class_plot + geom_bar(aes(rating_class), fill = c("green4", "yellow2", "red"))
 rating_class_plot <- rating_class_plot + theme_bw()
 
-##nota_plot <- nota_plot + geom_line(aes(nota_plot), color = "blue") + theme_bw() + ggtitle("MÈdia das AvaliaÁıes dos Apps") +
-      ##xlab("Data") + ylab("MÈdia Nota")
+##nota_plot <- nota_plot + geom_line(aes(nota_plot), color = "blue") + theme_bw() + ggtitle("M√©dia das Avalia√ß√µes dos Apps") +
+      ##xlab("Data") + ylab("M√©dia Nota")
 
 rating.Histogram
 freq.Category.Plot
